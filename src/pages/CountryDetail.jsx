@@ -80,7 +80,7 @@ function CountryDetail() {
     <div className="container mx-auto px-6 py-12 max-w-7xl">
       <Link 
         to="/" 
-        className="inline-flex items-center px-6 py-3 mb-10 bg-white dark:bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 dark:text-white text-gray-800 font-medium"
+        className="inline-flex items-center px-6 py-3 mb-10 bg-white dark:bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 dark:text-white text-gray-800 font-medium mt-12"
       >
         <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7 7-7m8 14V5" />
