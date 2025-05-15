@@ -122,7 +122,7 @@ function CountryCard({ country }) {
       <button
         onClick={toggleFavorite}
         className={`
-          absolute top-2 right-2 p-3 z-20
+          absolute top-2 right-2 p-3 z-0
           rounded-full shadow-lg backdrop-blur-sm
           transition-all duration-500
           ${isFavorite ? 'bg-yellow-50 dark:bg-yellow-900/70' : 'bg-white/80 dark:bg-gray-800/80'}

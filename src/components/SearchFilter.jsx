@@ -6,8 +6,21 @@ function SearchFilter() {
   const { searchTerm, setSearchTerm, selectedRegion, setSelectedRegion } = useCountryContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  
+
   const regions = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
+
+  // Load selectedRegion from localStorage on mount
+  useEffect(() => {
+    const savedRegion = localStorage.getItem('selectedRegion');
+    if (savedRegion !== null) {
+      setSelectedRegion(savedRegion);
+    }
+  }, []);
+
+  // Save selectedRegion to localStorage on change
+  useEffect(() => {
+    localStorage.setItem('selectedRegion', selectedRegion || '');
+  }, [selectedRegion]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -16,7 +29,7 @@ function SearchFilter() {
         setIsDropdownOpen(false);
       }
     }
-    
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -66,7 +79,7 @@ function SearchFilter() {
             className={`absolute right-4 text-gray-400 dark:text-gray-300 transition-transform duration-300 ${isDropdownOpen ? 'transform rotate-180' : ''}`} 
           />
         </button>
-        
+
         {isDropdownOpen && (
           <ul className="absolute z-10 w-full mt-2 py-1 bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg shadow-lg max-h-60 overflow-auto transition-all duration-200 animate-fadeIn">
             <li>
@@ -101,12 +114,3 @@ function SearchFilter() {
 }
 
 export default SearchFilter;
-
-// Add this to your global CSS or tailwind.config.js extend
-// @keyframes fadeIn {
-//   from { opacity: 0; transform: translateY(-8px); }
-//   to { opacity: 1; transform: translateY(0); }
-// }
-// .animate-fadeIn {
-//   animation: fadeIn 0.2s ease-out forwards;
-// }

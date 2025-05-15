@@ -9,9 +9,36 @@ export const CountryProvider = ({ children }) => {
   const [filteredCountries, setFilteredCountries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedRegion, setSelectedRegion] = useState('');
+  const [searchTermState, setSearchTermState] = useState('');
+  const [selectedRegionState, setSelectedRegionState] = useState('');
 
+  // Wrapper to persist selectedRegion to localStorage
+  const setSelectedRegion = (region) => {
+    setSelectedRegionState(region);
+    localStorage.setItem('selectedRegion', region);
+  };
+
+  // Wrapper to persist searchTerm to localStorage
+  const setSearchTerm = (term) => {
+    setSearchTermState(term);
+    localStorage.setItem('searchTerm', term);
+  };
+
+  // Load persisted values on mount
+  useEffect(() => {
+    const savedRegion = localStorage.getItem('selectedRegion');
+    const savedSearch = localStorage.getItem('searchTerm');
+
+    if (savedRegion) {
+      setSelectedRegionState(savedRegion);
+    }
+
+    if (savedSearch) {
+      setSearchTermState(savedSearch);
+    }
+  }, []);
+
+  // Fetch all countries
   useEffect(() => {
     const getCountries = async () => {
       try {
@@ -25,28 +52,26 @@ export const CountryProvider = ({ children }) => {
         setLoading(false);
       }
     };
-    
+
     getCountries();
   }, []);
 
-  // Filter countries based on search term and region
+  // Filter countries based on search and region
   useEffect(() => {
     let result = countries;
-    
-    if (searchTerm) {
-      result = result.filter(country => 
-        country.name.common.toLowerCase().includes(searchTerm.toLowerCase())
+
+    if (selectedRegionState) {
+      result = result.filter(country => country.region === selectedRegionState);
+    }
+
+    if (searchTermState) {
+      result = result.filter(country =>
+        country.name.common.toLowerCase().includes(searchTermState.toLowerCase())
       );
     }
-    
-    if (selectedRegion) {
-      result = result.filter(country => 
-        country.region === selectedRegion
-      );
-    }
-    
+
     setFilteredCountries(result);
-  }, [searchTerm, selectedRegion, countries]);
+  }, [searchTermState, selectedRegionState, countries]);
 
   return (
     <CountryContext.Provider value={{
@@ -54,9 +79,9 @@ export const CountryProvider = ({ children }) => {
       filteredCountries,
       loading,
       error,
-      searchTerm,
+      searchTerm: searchTermState,
       setSearchTerm,
-      selectedRegion,
+      selectedRegion: selectedRegionState,
       setSelectedRegion
     }}>
       {children}
